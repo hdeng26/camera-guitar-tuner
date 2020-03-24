@@ -1,16 +1,16 @@
 import numpy as np
 import cv2
 
-cap = cv2.VideoCapture('vtest.avi')
+cap = cv2.VideoCapture('sample.mp4')
 while(cap.isOpened()):
     # Capture frame-by-frame
     ret, frame = cap.read()
 
     # Our operations on the frame come here
     gray = cv2.cvtColor(frame, cv2.COLOR_BGR2GRAY)
-
+    canny = cv2.Canny(gray, 30, 150)
     # Display the resulting frame
-    cv2.imshow('frame',gray)
+    cv2.imshow('frame',canny)
     if cv2.waitKey(1) & 0xFF == ord('q'):
         break
 
