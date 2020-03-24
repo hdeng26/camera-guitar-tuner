@@ -4,7 +4,7 @@ import math
 import argparse
 
 #main function
-gray = cv2.imread('test.PNG',0)
+gray = cv2.imread('1.png',0)
 
 
 
