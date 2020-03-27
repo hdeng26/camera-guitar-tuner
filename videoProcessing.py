@@ -1,19 +1,33 @@
-import numpy as np
 import cv2
+import numpy as np
+cap = cv2.VideoCapture("sample.mp4")
 
-cap = cv2.VideoCapture('sample.mp4')
-while(cap.isOpened()):
-    # Capture frame-by-frame
-    ret, frame = cap.read()
+ret, frame1 = cap.read()
+prvs = cv2.cvtColor(frame1,cv2.COLOR_BGR2GRAY)
+hsv = np.zeros_like(frame1)
+hsv[...,1] = 255
 
-    # Our operations on the frame come here
-    gray = cv2.cvtColor(frame, cv2.COLOR_BGR2GRAY)
-    canny = cv2.Canny(gray, 30, 150)
-    # Display the resulting frame
-    cv2.imshow('frame',canny)
-    if cv2.waitKey(1) & 0xFF == ord('q'):
+while(1):
+    ret, frame2 = cap.read()
+    next = cv2.cvtColor(frame2,cv2.COLOR_BGR2GRAY)
+
+    flow = cv2.calcOpticalFlowFarneback(prvs,next, None, 0.5, 5, 5, 3, 5, 1.1, 0)
+
+    mag, ang = cv2.cartToPolar(flow[...,0], flow[...,1])
+    hsv[...,0] = ang*180/np.pi/2
+    hsv[...,2] = cv2.normalize(mag,None,0,255,cv2.NORM_MINMAX)
+    rgb = cv2.cvtColor(hsv,cv2.COLOR_HSV2BGR)
+    canny = np.uint8(np.absolute(frame2))
+    canny[rgb == 0] = 0
+    canny[rgb > 0] = 255
+    cv2.imshow('frame2',canny)
+    k = cv2.waitKey(30) & 0xff
+    if k == 27:
         break
+    elif k == ord('s'):
+        cv2.imwrite('opticalfb.png',frame2)
+        cv2.imwrite('opticalhsv.png',rgb)
+    prvs = next
 
-# When everything done, release the capture
 cap.release()
 cv2.destroyAllWindows()
