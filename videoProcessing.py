@@ -1,5 +1,7 @@
 import cv2
 import numpy as np
+import math
+
 cap = cv2.VideoCapture("sampleTest.mp4")
 
 ret, frame1 = cap.read()
@@ -21,12 +23,28 @@ while(1):
     canny[rgb == 0] = 0
     canny[rgb > 0] = 255
     cv2.imshow('frame2',canny)'''
-    gray = np.float32(next)
-    dst = cv2.cornerHarris(gray,2,3,0.1)
-    dst = cv2.dilate(dst,None)
-    frame2[dst>0.01*dst.max()]=[0,0,255]
-    cv2.imshow('dst',frame2)
-    
+    # gray = np.float32(next)
+    edges = cv2.Canny(next, 30, 150, apertureSize=3)
+    lines = cv2.HoughLines(edges, 1, np.pi / 180, 100)
+    imgCopy = frame2.copy()
+    angles = []
+
+    if lines is not None:
+        for line in lines:
+            rho = line[0][0]
+            theta = line[0][1]
+            a = np.cos(theta)
+            b = np.sin(theta)
+            x0 = a * rho
+            y0 = b * rho
+            x1 = int(x0 + 1000 * (-b))
+            y1 = int(y0 + 1000 * (a))
+            x2 = int(x0 - 1000 * (-b))
+            y2 = int(y0 - 1000 * (a))
+            cv2.line(imgCopy, (x1, y1), (x2, y2), (0, 0, 255), 1)
+            angle = math.degrees(math.atan2(y2 - y1, x2 - x1))
+            angles.append(angle)
+    cv2.imshow('HoughLine', imgCopy)
     k = cv2.waitKey(30) & 0xff
     if k == 27:
         break

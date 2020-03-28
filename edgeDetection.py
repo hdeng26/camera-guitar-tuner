@@ -1,24 +1,21 @@
-import numpy 
-import cv2
+
+import sys
 import math
-import argparse
+import cv2
+import numpy as np
 
-#main function
-gray = cv2.imread('test2.jpg',0)
-
-
-
-    #30 and 150 is the threshold, larger than 150 is considered as edge,
-    #less than 30 is considered as not edge
-canny = cv2.Canny(gray, 30, 150)
-
-canny = numpy.uint8(numpy.absolute(canny))
-    #display two images in a figure
-cv2.imshow("Edge detection by Canny", numpy.hstack([gray,canny]))
-
-cv2.imwrite("1_edge_by_canny.jpg", canny)
-
-
-if(cv2.waitKey(0)==27):
-     cv2.destroyAllWindows()
+# Read image 
+gray = cv2.imread('lanes.jpg', 0) # road.png is the filename
+# Convert the image to gray-scale
+#gray = cv2.cvtColor(img, cv2.COLOR_BGR2GRAY)
+# Find the edges in the image using canny detector
+edges = cv2.Canny(gray, 50, 200)
+# Detect points that form a line
+lines = cv2.HoughLinesP(edges, 1, np.pi/180, 100, minLineLength=10, maxLineGap=250)
+# Draw lines on the image
+for line in lines:
+    x1, y1, x2, y2 = line[0]
+    cv2.line(img, (x1, y1), (x2, y2), (255, 0, 0), 3)
+# Show result
+cv2.imshow("Result Image", img)
 
