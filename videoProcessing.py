@@ -2,7 +2,7 @@ import cv2
 import numpy as np
 import math
 
-cap = cv2.VideoCapture("sampleTest.mp4")
+cap = cv2.VideoCapture("EADGBE.mp4")
 
 ret, frame1 = cap.read()
 prvs = cv2.cvtColor(frame1,cv2.COLOR_BGR2GRAY)
