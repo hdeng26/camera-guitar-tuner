@@ -2,7 +2,7 @@ import cv2
 import numpy as np
 import math
 
-cap = cv2.VideoCapture("sampleTest.mp4")
+cap = cv2.VideoCapture("sample.mp4")
 
 ret, frame1 = cap.read()
 prvs = cv2.cvtColor(frame1,cv2.COLOR_BGR2GRAY)
@@ -41,9 +41,11 @@ while(1):
             y1 = int(y0 + 1000 * (a))
             x2 = int(x0 - 1000 * (-b))
             y2 = int(y0 - 1000 * (a))
-            cv2.line(imgCopy, (x1, y1), (x2, y2), (0, 0, 255), 1)
             angle = math.degrees(math.atan2(y2 - y1, x2 - x1))
-            angles.append(angle)
+            if angle<5 and angle>-5:
+                cv2.line(imgCopy, (x1, y1), (x2, y2), (0, 0, 255), 1)
+                angles.append(angle)
+    print(angles)
     cv2.imshow('HoughLine', imgCopy)
     k = cv2.waitKey(30) & 0xff
     if k == 27:
@@ -51,7 +53,7 @@ while(1):
     elif k == ord('s'):
         cv2.imwrite('opticalfb.png',frame2)
         cv2.imwrite('opticalhsv.png',rgb)
-    #prvs = next
+    prvs = next
 
 cap.release()
 cv2.destroyAllWindows()
