@@ -25,7 +25,7 @@ while(1):
     cv2.imshow('frame2',canny)'''
     # gray = np.float32(next)
     edges = cv2.Canny(next, 30, 150, apertureSize=3)
-    lines = cv2.HoughLines(edges, 1, np.pi / 180, 100)
+    lines = cv2.HoughLines(edges, 1, np.pi / 180, 130)
     imgCopy = frame2.copy()
     angles = []
 
