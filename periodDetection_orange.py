@@ -71,7 +71,9 @@ def matchTemplate(input, template, color):
     loc = np.where( res >= threshold)
 
     #import wavelenth.py, then and get optimized matching result and wavelenth
+    # location,wavelenth = getResultAndWavelenth(matches)
 
+    #modify for pt in zip(*loc[::-1]):    to    for pt in zip(*location[::-1]):
     for pt in zip(*loc[::-1]):
         cv2.rectangle(input, pt, (pt[0] + w, pt[1] + h), color, 2)
     return input
