@@ -1,6 +1,4 @@
-import cv2
 import numpy as np
-from matplotlib import pyplot as plt
 
 def getResultAndWavelenth(matches):
     location = [[matches[0][0]],[matches[1][0]]]
@@ -11,18 +9,18 @@ def getResultAndWavelenth(matches):
             location[1].append(matches[1][i])
 
 
-    print(location)
+    #print(location)
 
     wavelenth = 0
     for i in range(1,len(location[1])):
         lenth = np.sqrt((location[1][i]-location[1][i-1])**2 + (location[0][i]-location[0][i-1])**2)
-        print(lenth)
+        #print(lenth)
         wavelenth += lenth
 
         
-
-    wavelenth /= (len(location[1]) - 1)
-    print(wavelenth)
+    if len(location[1])>1:
+        wavelenth /= (len(location[1]) - 1)
+    print(wavelenth,"averageLength")
 
     return location,wavelenth
 
