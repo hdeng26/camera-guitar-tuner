@@ -91,7 +91,7 @@ def matchTemplate(input, template, color):
         print(wavelenth)
 
     for pt in zip(*location[::-1]):
-        cv2.rectangle(input, pt, (pt[0] + w, pt[1] + h), (0,0,255), 2)
+        cv2.rectangle(input, pt, (pt[0] + w, pt[1] + h), color, 2)
 
     return input,wavelenth
     
