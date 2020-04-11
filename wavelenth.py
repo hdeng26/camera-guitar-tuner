@@ -4,10 +4,9 @@ def getResultAndWavelenth(matches):
     location = [[matches[0][0]],[matches[1][0]]]
 
     for i in range(1,len(matches[1])):
+        if matches[0][i] - matches[0][i-1] > 20:
+                break
         if matches[1][i] - matches[1][i-1] > 5:
-            if matches[0][i] - matches[0][i-1] > 20:
-                continue
-            else:
                 location[0].append(matches[0][i])
                 location[1].append(matches[1][i])
 
