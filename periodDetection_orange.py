@@ -51,23 +51,24 @@ def getRedline(input):
     
 
 def getTemplates(input, redLine):
-    boxRange = 15
+    boxRange = 20
     boxPos = input.copy()
     curRedline = getRedline(input)
+    cv2.imshow("redline",curRedline)
     curRedline = cv2.cvtColor(curRedline,cv2.COLOR_BGR2GRAY)
     templates = []
     centerLine = int(redLine.shape[1]/2)
     string = cv2.cvtColor(redLine, cv2.COLOR_BGR2GRAY)
     for i in range(redLine.shape[0]):
         if string[i][centerLine] != 0:
-            curBox = curRedline[i-int(boxRange*1.2):i+int(boxRange*1.2), centerLine-boxRange*2:centerLine+boxRange*2]
+            curBox = curRedline[i-boxRange:i+boxRange, centerLine-boxRange:centerLine+boxRange]
             if curBox[curBox>0].any():
                 #print("curLine contains straight line")
                 continue
             
-            templates.append(input[i-int(boxRange*1.2):i+int(boxRange*1.2), centerLine-boxRange*2:centerLine+boxRange*2])
+            templates.append(input[i-boxRange:i+boxRange, centerLine-boxRange:centerLine+boxRange])
             boxPos[i-boxRange,centerLine] = [255, 255, 255]
-    #cv2.imshow("box", boxPos)
+    cv2.imshow("box", boxPos)
     return templates
 
 def matchTemplate(input, template, color):
@@ -75,7 +76,7 @@ def matchTemplate(input, template, color):
     template = cv2.cvtColor(template, cv2.COLOR_BGR2GRAY)
     w, h = template.shape[::-1]
     res = cv2.matchTemplate(img_gray,template,cv2.TM_CCOEFF_NORMED)
-    threshold = 0.90
+    threshold = 0.9
     loc = np.where( res >= threshold)
     
     location,wavelenth = getWL(loc)
@@ -86,13 +87,14 @@ def matchTemplate(input, template, color):
 def imageProcess(frame, redlineImg):
     #img_redline = cv2.imread('test2.jpg')
     redline = getRedline(redlineImg)
-    #cv2.imshow('HoughLine', redline)
+    cv2.imshow('HoughLine', redline)
 
     #img_rgb = cv2.imread('test3.jpg')
     tempList = getTemplates(frame, redline)
         
     output = frame.copy()
     for i in range(len(tempList)):
+        print(i, "number")
         output = matchTemplate(frame, tempList[i], COLOR[i%6])
     return output
     #cv2.imshow('res',output)
