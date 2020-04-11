@@ -69,6 +69,9 @@ def matchTemplate(input, template, color):
     res = cv2.matchTemplate(img_gray,template,cv2.TM_CCOEFF_NORMED)
     threshold = 0.90
     loc = np.where( res >= threshold)
+
+    #import wavelenth.py, then and get optimized matching result and wavelenth
+
     for pt in zip(*loc[::-1]):
         cv2.rectangle(input, pt, (pt[0] + w, pt[1] + h), color, 2)
     return input
@@ -93,5 +96,6 @@ for i in range(len(tempList)):
     output = matchTemplate(img_rgb, tempList[i], COLOR[i%6])
 
 cv2.imshow('res',output)
+cv2.waitKey(0)
 
 # todo: use the center of red line to create a may be 50*50 area and when red line disappered, use this function to match same area
