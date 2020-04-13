@@ -1,27 +1,41 @@
 import numpy as np
 import cv2
-
+import sys
+np.set_printoptions(threshold=sys.maxsize)
        # Read the main image
+image = "test1.jpg"
+img = cv2.imread(image)
+img2 = cv2.imread(image)
+edge = cv2.Canny(img,100,200)
+inputImage = cv2.imread(image, 0)
+blur = cv2.GaussianBlur(inputImage,(5,5),0)
+sobelx = cv2.Sobel(blur,cv2.CV_64F,1,0,ksize=5)
+sobely = cv2.Sobel(blur,cv2.CV_64F,0,1,ksize=5)
+'''
+abs_grad_x = cv2.convertScaleAbs(sobelx)
+abs_grad_y = cv2.convertScaleAbs(sobely)
+grad = cv2.addWeighted(abs_grad_x, 0.5, abs_grad_y, 0.5, 0)
+cv2.imshow("grad", grad)'''
 
-inputImage = cv2.imread("test1.jpg")
+theta = np.arctan2(np.float32(sobely), np.float32(sobelx))
+'''
+img[...,0] = 255*(abs(theta/np.pi))
+img[...,2] = 0
+img[...,1] = cv2.normalize(grad,None,0,255,cv2.NORM_MINMAX)'''
 
+blur = 255*(abs(theta/np.pi))
+img2[edge == 0] = [0,0,0]
+#img[(edge[blur>127],edge[blur>127]).all] = [255,255,0]
+#img.all(edge[blur>127],edge[blur>127]) = [255,255,0]
+for i in range(img.shape[0]):
+    for j in range(img.shape[1]):
+        if edge[i][j] == 255: # and blur[i][j]<160 and blur[i][j]>150:
+            
+            img2[i][j] = [blur[i][j], 128, 255 - blur[i][j] ]
+        if edge[i][j] == 255 and blur[i][j]<170+5 and blur[i][j]>170-5:
+            img[i][j] = [255, 255, 0]
 
-inputImageGray = cv2.cvtColor(inputImage, cv2.COLOR_BGR2GRAY)
-
-       # Line Detection
-
-edges = cv2.Canny(inputImageGray,100,200,apertureSize = 3)
-
-minLineLength = 500 
-maxLineGap = 5 
-
-lines = cv2.HoughLinesP(edges,1,np.pi/180,90,minLineLength,maxLineGap)
-
-for x in range(0, len(lines)):
-    for x1,y1,x2,y2 in lines[x]:
-        cv2.line(inputImage,(x1,y1),(x2,y2),(0,128,0),2)
-
-#cv2.putText(inputImage,"Tracks Detected", (500,250), font, 0.5, 255)
-
-# Show result
-cv2.imshow("Trolley_Problem_Result", inputImage)
+#print(blur, blur.max(), blur.min())
+cv2.imshow("output", img2)
+cv2.imshow("point", img)
+#print(edge)
