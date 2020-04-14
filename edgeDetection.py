@@ -11,6 +11,7 @@ def getRedline(input):
 
     edges = cv2.Canny(img, 30, 150, apertureSize=3)
     lines = cv2.HoughLines(edges, 1, np.pi / 180, 130)
+    print(lines)
     imgCopy = input.copy()
     imgCopy.fill(0)
     angles = []
@@ -50,7 +51,7 @@ def getRedline(input):
 
 
 image = "test1.jpg"
-imgRed = cv2.imread("test2.jpg")
+imgRed = cv2.imread("noTouching.jpg")
 red = getRedline(imgRed)
 img = cv2.imread(image)
 img2 = cv2.imread(image)
@@ -85,4 +86,4 @@ cv2.imshow("output", img2)
 cv2.imshow("point", img)
 #print(edge)
 '''
-cv2.imshow("output", img2)
+cv2.imshow("output", red)
