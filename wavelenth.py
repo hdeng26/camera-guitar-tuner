@@ -22,7 +22,7 @@ def getResultAndWavelenth(matches):
         
     if len(location[1])>1:
         wavelenth /= (len(location[1]) - 1)
-    print(wavelenth,"averageLength")
+    #print(wavelenth,"averageLength")
 
     return location,wavelenth
 

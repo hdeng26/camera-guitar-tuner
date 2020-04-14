@@ -4,7 +4,8 @@ import math
 import time
 
 from wavelenth import getResultAndWavelenth as getWL
-
+#wavelengthStandard = [127.6666667, 100.99260276933872, 85.61499669025667, 61.33333442456405, 52.54397044068103, 42.965792947347644]
+STANDARD = [2.7753623195652173, 2.1954913645508416, 1.8611955802229712, 1.3333333570557402, 1.1422602269713267, 0.9340389771162532]
 STRING_DIS = 46
 
 COLOR = [(0,0,255), (0,255,0), (255,0,0), (0,255,255), (255,0,255), (255,255,0)]
@@ -91,7 +92,7 @@ def matchTemplate(input, template, color):
     location,wavelenth = getWL(loc)
     for pt in zip(*location[::-1]):
         cv2.rectangle(input, pt, (pt[0] + w, pt[1] + h), color, 2)
-    return input
+    return input, wavelenth
     
 
 
@@ -117,19 +118,20 @@ def imageProcess(frame, redlineImg):
 
     stringList = get6lines(frame, redline)
 
+    waveLengthArray = [0, 0, 0, 0, 0, 0]
     output = np.copy(frame)
     count = 0
     for i in range(6):
 
         if len(order)>count and order[count] == i:
-            newOutput = matchTemplate(stringList[i], tempList[count], COLOR[i%6])
+            newOutput, currentWavelength = matchTemplate(stringList[i], tempList[count], COLOR[i%6])
+            waveLengthArray[i] = currentWavelength
             count += 1
         else:
             newOutput = stringList[i]
         output = np.vstack((output, newOutput))
         
-    
-    return output
+    return output, waveLengthArray
 
 
 '''
