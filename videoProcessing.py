@@ -2,7 +2,7 @@ import cv2
 import numpy as np
 import math
 import time
-import periodDetection_orange
+import periodDetection
 
 cap = cv2.VideoCapture("sampleTest.mp4")
 '''standard wavelength for 6 string in tone E A D G B E'''
