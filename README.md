@@ -39,7 +39,7 @@ For this project, a problem is how to process real-time video to get visual osci
 | 2020-04-01 - Project Due              | Review                                |
 
 ## Result
-TODO
+We suppose to use the wavelengths of the strings to judge the musical nodes from the waveform images.  The standard tuning defines the pitches as E, A, D, G, B, and E with open strings. Based on the formula wavelength=speed/frequency, each standard tuning has a fixed wavelength, which is used to identify whether the notes played is standard by comparing the wavelength we get with the wavelength of standard tunings in this project. In this project, we used the Hough Transform and template matching method to find out the wavelength.
 
 ***
 Please run videoProcessing.py to process the input guitar video
