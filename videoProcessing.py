@@ -16,7 +16,7 @@ while(1):
     if ret is False:
         break
     # get wavelength from current string wave
-    output, waveArray = periodDetection_orange.imageProcess(frame,img_redline)
+    output, waveArray = periodDetection.imageProcess(frame,img_redline)
 
     # output realtime result
     for i in range(len(waveArray)):
