@@ -45,3 +45,6 @@ We suppose to use the wavelengths of the strings to judge the musical nodes from
 Please run videoProcessing.py to process the input guitar video
 
 Developed by newest numpy, OpenCV 3.4 and python 3.8
+comp4102_report.pdf is the final write up
+instruction.mp4 is the video shows our code is running
+
